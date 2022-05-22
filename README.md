@@ -82,41 +82,7 @@ The defaults work well for a single Tello drone.
 
 ## Installation
 
-### 1. Set up your Linux environment
-
-Set up a Ubuntu 20.04 box or VM.
-
-Also install asio:
-~~~
-sudo apt install libasio-dev
-~~~
-
-### 2. Set up your ROS environment
-
-[Install ROS2 Foxy](https://docs.ros.org/) with the `ros-foxy-desktop` option.
-
-If you install binaries, be sure to also install the 
-[development tools and ROS tools](https://docs.ros.org/en/foxy/Installation/Ubuntu-Development-Setup.html)
-from the source installation instructions.
-
-Install these additional packages:
-~~~
-sudo apt install ros-foxy-cv-bridge ros-foxy-camera-calibration-parsers
-~~~
-
-### 3. Install `tello_ros`
-
-Download, compile and install `tello_ros`:
-~~~
-mkdir -p ~/tello_ros_ws/src
-cd ~/tello_ros_ws/src
-git clone https://github.com/clydemcqueen/tello_ros.git
-git clone https://github.com/ptrmu/ros2_shared.git
-cd ..
-source /opt/ros/foxy/setup.bash
-# If you didn't intall Gazebo, skip tello_gazebo while building:
-colcon build --event-handlers console_direct+ --packages-skip tello_gazebo
-~~~
+### 1. Follow the setup in JamyChahal/tello_ros_script
 
 ## Teleop
 
@@ -152,21 +118,6 @@ ros2 topic pub /cmd_vel geometry_msgs/Twist "{linear: {x: 0.0, y: 0.0, z: 0.0}, 
 * Tello EDU
   * Firmware v02.04.69.03, SDK v2.0
 
-## Versions and branches
-
-`tello_ros` was developed along with several other projects while ROS2 was rapidly changing.
-All of the related projects adopted similar conventions around branch names:
-* the `master` branch works with the latest ROS2 release (Foxy as of this writing)
-* there may be branches for older ROS2 versions, such as `crystal`, `dashing` or `eloquent`
-
-The following projects and branches were tested together:
-
-* ROS2 Foxy with fiducial_vlam:
-  * git clone https://github.com/ptrmu/ros2_shared.git
-  * git clone https://github.com/ptrmu/fiducial_vlam.git
-  * git clone https://github.com/clydemcqueen/tello_ros.git
-  * git clone https://github.com/clydemcqueen/flock2.git
-
 ## Credits
 
 The h264decoder is from: https://github.com/DaWelter/h264decoder
@@ -186,3 +137,12 @@ is a good developer community
 #### Tello SDK errata
 
 * Tello drones do not respond to `rc` commands (the SDK suggests that they return `ok` or `error`)
+
+#### Tello link 
+
+ros2 launch tello_driver uav_launch.py
+
+
+#### Tello calibration
+
+ros2 run camera_calibration cameracalibrator --size 7x10 --square 0.015 --ros-args --remap image:=drone1/image_raw
